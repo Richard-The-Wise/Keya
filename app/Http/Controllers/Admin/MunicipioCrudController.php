@@ -2,17 +2,16 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Requests\PaisesRequest;
-use App\Models\Paises;
+use App\Http\Requests\MunicipioRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 
 /**
- * Class PaisesCrudController
+ * Class MunicipioCrudController
  * @package App\Http\Controllers\Admin
  * @property-read \Backpack\CRUD\app\Library\CrudPanel\CrudPanel $crud
  */
-class PaisesCrudController extends CrudController
+class MunicipioCrudController extends CrudController
 {
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
@@ -27,10 +26,9 @@ class PaisesCrudController extends CrudController
      */
     public function setup()
     {
-        CRUD::setModel(Paises::class);
-//        $this->crud->setModel(Paises::class);
-        CRUD::setRoute(config('backpack.base.route_prefix') . '/paises');
-        CRUD::setEntityNameStrings('País', 'Países');
+        CRUD::setModel(\App\Models\Municipio::class);
+        CRUD::setRoute(config('backpack.base.route_prefix') . '/municipio');
+        CRUD::setEntityNameStrings('municipio', 'municipios');
     }
 
     /**
@@ -42,6 +40,7 @@ class PaisesCrudController extends CrudController
     protected function setupListOperation()
     {
         CRUD::column('id');
+//        CRUD::column('estado_id');
         CRUD::column('nombre');
         CRUD::column('created_at');
 //        CRUD::column('updated_at');
@@ -62,9 +61,10 @@ class PaisesCrudController extends CrudController
      */
     protected function setupCreateOperation()
     {
-        CRUD::setValidation(PaisesRequest::class);
+        CRUD::setValidation(MunicipioRequest::class);
 
 //        CRUD::field('id');
+//        CRUD::field('estado_id');
         CRUD::field('nombre');
 //        CRUD::field('created_at');
 //        CRUD::field('updated_at');

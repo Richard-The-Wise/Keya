@@ -16,4 +16,4 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/{name}','app/Http/Controllers/UsuarioControlers@saludo');
+//Route::get('/{name}','app/Http/Controllers/UsuarioControlers@saludo');

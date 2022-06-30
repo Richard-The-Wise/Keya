@@ -2,17 +2,16 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Requests\PaisesRequest;
-use App\Models\Paises;
+use App\Http\Requests\EstadoRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 
 /**
- * Class PaisesCrudController
+ * Class EstadoCrudController
  * @package App\Http\Controllers\Admin
  * @property-read \Backpack\CRUD\app\Library\CrudPanel\CrudPanel $crud
  */
-class PaisesCrudController extends CrudController
+class EstadoCrudController extends CrudController
 {
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
@@ -27,10 +26,9 @@ class PaisesCrudController extends CrudController
      */
     public function setup()
     {
-        CRUD::setModel(Paises::class);
-//        $this->crud->setModel(Paises::class);
-        CRUD::setRoute(config('backpack.base.route_prefix') . '/paises');
-        CRUD::setEntityNameStrings('País', 'Países');
+        CRUD::setModel(\App\Models\Estado::class);
+        CRUD::setRoute(config('backpack.base.route_prefix') . '/estado');
+        CRUD::setEntityNameStrings('estado', 'estados');
     }
 
     /**
@@ -42,6 +40,7 @@ class PaisesCrudController extends CrudController
     protected function setupListOperation()
     {
         CRUD::column('id');
+//        CRUD::column('pais_id');
         CRUD::column('nombre');
         CRUD::column('created_at');
 //        CRUD::column('updated_at');
@@ -62,10 +61,18 @@ class PaisesCrudController extends CrudController
      */
     protected function setupCreateOperation()
     {
-        CRUD::setValidation(PaisesRequest::class);
+        CRUD::setValidation(EstadoRequest::class);
 
 //        CRUD::field('id');
+//        CRUD::field('pais_id');
         CRUD::field('nombre');
+
+        CRUD::setColumnDetails('id', [
+            'label' => 'Pais', // Table column heading
+            'type' => 'select',
+            'entity' => 'paises', // the method that defines the relationship in your Model
+            'attribute' => 'pais_id', // foreign key attribute that is shown to user
+        ]);
 //        CRUD::field('created_at');
 //        CRUD::field('updated_at');
 //        CRUD::field('deleted_at');
