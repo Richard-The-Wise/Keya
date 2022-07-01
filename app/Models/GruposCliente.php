@@ -5,7 +5,7 @@ namespace App\Models;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
 
-class Municipio extends Model
+class GruposCliente extends Model
 {
     use CrudTrait;
 
@@ -15,11 +15,11 @@ class Municipio extends Model
     |--------------------------------------------------------------------------
     */
 
-    protected $table = 'municipios';
+    protected $table = 'clientes_grupos';
      protected $primaryKey = 'id';
     // public $timestamps = false;
     protected $guarded = ['id'];
-     protected $fillable = ['id','estado_id','nombre','pais_id'];
+     protected $fillable = ['id','estatus','nombre'];
     // protected $hidden = [];
      protected $dates = ['created_at','updated_at','deleted_at'];
 
@@ -34,13 +34,6 @@ class Municipio extends Model
     | RELATIONS
     |--------------------------------------------------------------------------
     */
-    public function estados(){
-        return $this->belongsTo(Estado::class,'estado_id','id');
-    }
-
-    public function paises(){
-        return $this->belongsTo(Paises::class,'pais_id','id');
-    }
 
     /*
     |--------------------------------------------------------------------------

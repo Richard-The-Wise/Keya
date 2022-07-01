@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\EstadoRequest;
+use App\Models\Estado;
+use App\Models\Paises;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
+use Illuminate\Http\Request;
 
 /**
  * Class EstadoCrudController
@@ -39,18 +42,33 @@ class EstadoCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        CRUD::column('id');
-//        CRUD::column('pais_id');
-        CRUD::column('nombre');
-        CRUD::column('created_at');
-//        CRUD::column('updated_at');
-//        CRUD::column('deleted_at');
+        $this->crud-> addColumns([
+            [
+                // any type of relationship
+                'name'         => 'estados', // name of relationship method in the model
+                'type'         => 'relationship',
+                'label'        => 'Paises', // Table column heading
+                // OPTIONAL
+                 'entity'    => 'paises', // the method that defines the relationship in your Model
+                 'attribute' => 'nombre', // foreign key attribute that is shown to user
+                 'model'     => Paises::class, // foreign key model
+            ],
 
-        /**
-         * Columns can be defined using the fluent syntax or array syntax:
-         * - CRUD::column('price')->type('number');
-         * - CRUD::addColumn(['name' => 'price', 'type' => 'number']);
-         */
+            [
+                // any type of relationship
+                'name'         => 'id', // name of relationship method in the model
+                'type'         => 'number',
+                'label'        => 'ID', // Table column heading
+
+            ],
+
+            [
+                'name'         => 'nombre', // name of relationship method in the model
+                'type'         => 'text',
+                'label'        => 'Nombre', // Table column heading
+            ]
+        ]);
+
     }
 
     /**
@@ -61,27 +79,33 @@ class EstadoCrudController extends CrudController
      */
     protected function setupCreateOperation()
     {
-        CRUD::setValidation(EstadoRequest::class);
+        $this-> crud -> setValidation(EstadoRequest::class);
+        $this -> crud -> addFields([
 
-//        CRUD::field('id');
-//        CRUD::field('pais_id');
-        CRUD::field('nombre');
+            [  // Select2
+                'label'     => "Paises",
+                'type'      => 'select2',
+                'name'      => 'pais_id', // the db column for the foreign key
 
-        CRUD::setColumnDetails('id', [
-            'label' => 'Pais', // Table column heading
-            'type' => 'select',
-            'entity' => 'paises', // the method that defines the relationship in your Model
-            'attribute' => 'pais_id', // foreign key attribute that is shown to user
+                // optional
+                'entity'    => 'paises', // the method that defines the relationship in your Model
+                'model'     => Paises::class, // foreign key model
+                'attribute' => 'nombre', // foreign key attribute that is shown to user
+
+                // also optional
+                'options'   => (function ($query) {
+                    return $query->orderBy('nombre', 'ASC')->get();
+                }), // force the related options to be a custom query, instead of all(); you can use this to filter the results show in the select
+            ],
+
+            [   // Text
+                'name'  => 'nombre',
+                'label' => "Estado",
+                'type'  => 'text',
+            ],
+
         ]);
-//        CRUD::field('created_at');
-//        CRUD::field('updated_at');
-//        CRUD::field('deleted_at');
 
-        /**
-         * Fields can be defined using the fluent syntax or array syntax:
-         * - CRUD::field('price')->type('number');
-         * - CRUD::addField(['name' => 'price', 'type' => 'number']));
-         */
     }
 
     /**
@@ -93,5 +117,23 @@ class EstadoCrudController extends CrudController
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
+    }
+
+    public function obtenerEstados(Request $request)
+    {
+        $search_term = $request->input('q');
+        $pais_id = $request->form[2]['value'];
+        if ($search_term) {
+            $results = Estado::query()
+                ->where('pais_id',$pais_id)
+                ->where('nombre', 'LIKE', '%'.$search_term.'%')
+                ->paginate(10);
+        } else {
+            $results = Estado::query()
+                ->where('pais_id',$pais_id)
+                ->paginate(10);
+        }
+
+        return $results;
     }
 }

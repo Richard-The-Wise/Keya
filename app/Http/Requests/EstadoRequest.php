@@ -25,7 +25,8 @@ class EstadoRequest extends FormRequest
     public function rules()
     {
         return [
-            // 'name' => 'required|min:5|max:255'
+             'nombre' => 'required|unique:App\Models\Estado,nombre|max:255',
+             'pais_id' => 'required|numeric'
         ];
     }
 
@@ -49,7 +50,10 @@ class EstadoRequest extends FormRequest
     public function messages()
     {
         return [
-            //
+            'nombre.required' => 'El campo es requerido',
+            'nombre.unique' => 'El estado ya existe en el registro',
+            'nombre.max' => 'No se aceptan más de 255 caracteres',
+            'pais_id.required' => 'Es necesario introducir el país'
         ];
     }
 }

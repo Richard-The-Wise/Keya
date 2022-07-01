@@ -17,3 +17,16 @@ Route::get('/', function () {
 });
 
 //Route::get('/{name}','app/Http/Controllers/UsuarioControlers@saludo');
+
+Route::group([
+    'prefix'     => 'webapi',
+    'middleware' => array_merge(
+        (array) config('backpack.base.web_middleware', 'web'),
+        (array) config('backpack.base.middleware_key', 'admin')
+    ),
+    'namespace'  => 'App\Http\Controllers\Admin',
+], function () { // custom admin routes
+
+    Route::get('obtenerPaises', 'PaisesCrudController@obtenerPaises');
+    Route::get('obtenerEstados', 'EstadoCrudController@obtenerEstados');
+});

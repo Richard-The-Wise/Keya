@@ -6,6 +6,7 @@ use App\Http\Requests\PaisesRequest;
 use App\Models\Paises;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
+use Illuminate\Http\Request;
 
 /**
  * Class PaisesCrudController
@@ -41,17 +42,15 @@ class PaisesCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        CRUD::column('id');
-        CRUD::column('nombre');
-        CRUD::column('created_at');
-//        CRUD::column('updated_at');
-//        CRUD::column('deleted_at');
-
-        /**
-         * Columns can be defined using the fluent syntax or array syntax:
-         * - CRUD::column('price')->type('number');
-         * - CRUD::addColumn(['name' => 'price', 'type' => 'number']);
-         */
+        $this -> crud -> addColumns([[
+            'name'  => 'id', // The db column name
+            'label' => 'ID', // Table column heading
+            'type'  => 'number'
+        ],[
+            'name'  => 'nombre',
+            'label' => 'PAIS',
+            'type'  => 'text'
+        ],]);
     }
 
     /**
@@ -63,18 +62,11 @@ class PaisesCrudController extends CrudController
     protected function setupCreateOperation()
     {
         CRUD::setValidation(PaisesRequest::class);
-
-//        CRUD::field('id');
-        CRUD::field('nombre');
-//        CRUD::field('created_at');
-//        CRUD::field('updated_at');
-//        CRUD::field('deleted_at');
-
-        /**
-         * Fields can be defined using the fluent syntax or array syntax:
-         * - CRUD::field('price')->type('number');
-         * - CRUD::addField(['name' => 'price', 'type' => 'number']));
-         */
+       $this -> crud -> addFields([[   // Text
+           'name'  => 'nombre',
+           'label' => "Pais",
+           'type'  => 'text',
+       ],]);
     }
 
     /**
@@ -86,5 +78,17 @@ class PaisesCrudController extends CrudController
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
+    }
+
+    public function obtenerPaises(Request $request){
+        $buscar = $request->input('q');
+        if ($buscar) {
+            $resultados = Paises::query()
+                ->where('nombre', 'LIKE', '%'.$buscar.'%')
+                ->paginate(10);
+        } else {
+            $resultados = Paises::query()->paginate(10);
+        }
+        return $resultados;
     }
 }

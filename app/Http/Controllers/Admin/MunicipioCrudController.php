@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\MunicipioRequest;
+use App\Models\Estado;
+use App\Models\Paises;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 
@@ -39,18 +41,39 @@ class MunicipioCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        CRUD::column('id');
-//        CRUD::column('estado_id');
-        CRUD::column('nombre');
-        CRUD::column('created_at');
-//        CRUD::column('updated_at');
-//        CRUD::column('deleted_at');
+        $this->crud->addColumns([
 
-        /**
-         * Columns can be defined using the fluent syntax or array syntax:
-         * - CRUD::column('price')->type('number');
-         * - CRUD::addColumn(['name' => 'price', 'type' => 'number']);
-         */
+            [
+                // any type of relationship
+                'name'         => 'paises', // name of relationship method in the model
+                'type'         => 'relationship',
+                'label'        => 'Pais', // Table column heading
+                // OPTIONAL
+                 'entity'    => 'paises', // the method that defines the relationship in your Model
+                 'attribute' => 'nombre', // foreign key attribute that is shown to user
+                 'model'     => Paises::class, // foreign key model
+            ],
+            [
+                // any type of relationship
+                'name'         => 'estados', // name of relationship method in the model
+                'type'         => 'relationship',
+                'label'        => 'Estado', // Table column heading
+                // OPTIONAL
+                 'entity'    => 'estados', // the method that defines the relationship in your Model
+                 'attribute' => 'nombre', // foreign key attribute that is shown to user
+                 'model'     => Estado::class, // foreign key model
+            ],
+            [
+                'name'      => 'id', // The db column name
+                'label'     => 'ID', // Table column heading
+
+            ],
+            [
+                'name'      => 'nombre', // The db column name
+                'label'     => 'Municipio', // Table column heading
+            ]
+
+        ]);
     }
 
     /**
@@ -61,20 +84,43 @@ class MunicipioCrudController extends CrudController
      */
     protected function setupCreateOperation()
     {
-        CRUD::setValidation(MunicipioRequest::class);
+//        CRUD::setValidation(MunicipioRequest::class);
+        $this->crud->addFields([
 
-//        CRUD::field('id');
-//        CRUD::field('estado_id');
-        CRUD::field('nombre');
-//        CRUD::field('created_at');
-//        CRUD::field('updated_at');
-//        CRUD::field('deleted_at');
+            [   // 1-n relationship
+                'label'       => "Paises", // Table column heading
+                'placeholder' => 'SELECCIONE PAIS',
+                'minimum_input_length' => 1,
+                'type'        => "select2_from_ajax",
+                'name'        => 'pais_id', // the column that contains the ID of that connected entity
+                'entity'      => 'paises', // the method that defines the relationship in your Model
+                'attribute'   => "nombre", // foreign key attribute that is shown to user
+                'data_source' => url("webapi/obtenerPaises"), // url to controller search function (with /{id} should return model)
+                'model'                   => Paises::class, // foreign key model
+                'include_all_form_fields' => false, // optional - only send the current field through AJAX (for a smaller payload if you're not using multiple chained select2s)
 
-        /**
-         * Fields can be defined using the fluent syntax or array syntax:
-         * - CRUD::field('price')->type('number');
-         * - CRUD::addField(['name' => 'price', 'type' => 'number']));
-         */
+            ],
+
+            [   // 1-n relationship
+                'label'       => "Estados", // Table column heading
+                'placeholder' => 'SELECCIONE ESTADO',
+                'minimum_input_length' => 1,
+                'type'        => "select2_from_ajax",
+                'name'        => 'estado_id', // the column that contains the ID of that connected entity
+                'entity'      => 'estados', // the method that defines the relationship in your Model
+                'attribute'   => "nombre", // foreign key attribute that is shown to user
+                'data_source' => url("webapi/obtenerEstados"), // url to controller search function (with /{id} should return model)
+                'model'                   => Estado::class, // foreign key model
+                'include_all_form_fields' => true, // optional - only send the current field through AJAX (for a smaller payload if you're not using multiple chained select2s)
+
+            ],
+
+            [   // Text
+                'name'  => 'nombre',
+                'label' => "Municipio",
+                'type'  => 'text',
+            ]
+        ]);
     }
 
     /**

@@ -25,7 +25,7 @@ class PaisesRequest extends FormRequest
     public function rules()
     {
         return [
-            // 'name' => 'required|min:5|max:255'
+             'nombre' => 'required|max:255|unique:App\Models\Paises,nombre',
         ];
     }
 
@@ -49,7 +49,9 @@ class PaisesRequest extends FormRequest
     public function messages()
     {
         return [
-            //
+            'nombre.required' => 'Este cuadro es requerido',
+            'nombre.max' => 'No se aceptan más de 255 caracteres',
+            'nombre.unique' => 'Este país ya existe en el registro',
         ];
     }
 }

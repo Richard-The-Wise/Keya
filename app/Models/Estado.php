@@ -19,7 +19,7 @@ class Estado extends Model
      protected $primaryKey = 'id';
     // public $timestamps = false;
     protected $guarded = ['id'];
-     protected $fillable = ['nombre'];
+     protected $fillable = ['nombre','id','pais_id'];
     // protected $hidden = [];
      protected $dates = ['created_at','updated_at','deleted_at'];
 
@@ -35,11 +35,11 @@ class Estado extends Model
     |--------------------------------------------------------------------------
     */
     public function paises(){
-        return $this->belongsTo(Paises::class,'pais_id');
+        return $this->belongsTo(Paises::class,'pais_id','id');
     }
 
     public function municipios(){
-        return $this->hasMany(Municipio::class);
+        return $this->hasMany(Municipio::class, 'estado_id','id');
     }
 
     /*

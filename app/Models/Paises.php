@@ -4,10 +4,12 @@ namespace App\Models;
 
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Paises extends Model
 {
     use CrudTrait;
+    use SoftDeletes;
 
     /*
     |--------------------------------------------------------------------------
@@ -19,9 +21,9 @@ class Paises extends Model
     protected $primaryKey = 'id';
     // public $timestamps = false;
     protected $guarded = ['id'];
-     protected $fillable = ['nombre'];
+    protected $fillable = ['id','nombre'];
     // protected $hidden = [];
-     protected $dates = ['created_at','updated_at','deleted_at'];
+    protected $dates = ['created_at','updated_at','deleted_at'];
     // protected $casts = [];
     // protected $appends = [];
 
@@ -39,7 +41,11 @@ class Paises extends Model
     |--------------------------------------------------------------------------
     */
     public function estados(){
-        return $this->hasMany(Estado::class);
+        return $this->hasMany(Estado::class, 'pais_id', 'id');
+    }
+
+    public function municipios(){
+        return $this->hasMany(Municipio::class, 'pais_id','id');
     }
 
     /*
