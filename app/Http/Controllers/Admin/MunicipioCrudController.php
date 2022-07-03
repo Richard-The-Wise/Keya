@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\MunicipioRequest;
 use App\Models\Estado;
+use App\Models\Municipio;
 use App\Models\Paises;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
+use http\Client\Request;
 
 /**
  * Class MunicipioCrudController
@@ -133,4 +135,48 @@ class MunicipioCrudController extends CrudController
     {
         $this->setupCreateOperation();
     }
+
+    public function obtenerMunicipios(Request $request){
+        $search_term = $request->input('q');
+        $pais_id = $request->form[5]['value'];
+        $estado_id = $request->form[6]['value'];
+
+        if ($search_term)
+        {
+            $results = Municipio::query()
+            ->where('pais_id',$pais_id)
+            ->where('estado_id',$estado_id)
+            ->where('nombre', 'LIKE', '%'.$search_term.'%')
+            ->paginate(10);
+        }
+        else
+        {
+            $results = Municipio::query()
+            ->where('nombre', 'LIKE', '%'.$search_term.'%')
+            ->paginate(10);
+        }
+
+        return $results;
+    }
+
+    public function obtenerMunicipiosDirecciones(Request $request)
+    {
+        $search_term = $request->input('q');
+        $estado_id = $request->form[10]['value'];
+
+        if ($search_term) {
+            $results = Municipio::query()
+                ->where('estado_id' , $estado_id)
+                ->where('nombre', 'LIKE', '%'.$search_term.'%')
+                ->paginate(10);
+
+        } else {
+            $results = Municipio::query()
+                ->where('estado_id',$estado_id)
+                ->paginate(10);
+        }
+
+        return $results;
+    }
+
 }

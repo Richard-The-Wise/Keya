@@ -124,51 +124,67 @@ class ClientesCrudController extends CrudController
             'label' => 'Email Address',
             'type'  => 'email'
         ],
-        [  // Pais
-            'label'     => "Pais",
-            'type'      => 'select2',
-            'name'      => 'pais_id', // the db column for the foreign key
 
-            // optional
-            'entity'    => 'paises', // the method that defines the relationship in your Model
-            'model'     => Paises::class, // foreign key model
-            'attribute' => 'nombre', // foreign key attribute that is shown to user
+        [   // País Ajax
+            'label'       => "Paises", // Table column heading
+            'placeholder' => 'SELECCIONE PAIS',
+            'minimum_input_length' => 1,
+            'type'        => "select2_from_ajax",
+            'name'        => 'pais_id', // the column that contains the ID of that connected entity
+            'entity'      => 'paises', // the method that defines the relationship in your Model
+            'attribute'   => "nombre", // foreign key attribute that is shown to user
+            'data_source' => url("webapi/obtenerPaises"), // url to controller search function (with /{id} should return model)
+            'model'                   => Paises::class, // foreign key model
+            'include_all_form_fields' => false, // optional - only send the current field through AJAX (for a smaller payload if you're not using multiple chained select2s)
 
-            // also optional
-            'options'   => (function ($query) {
-                return $query->orderBy('nombre', 'ASC')->get();
-            }), // force the related options to be a custom query, instead of all(); you can use this to filter the results show in the select
         ],
-        [  // Estado
-            'label'     => "Estado",
-            'type'      => 'select2',
-            'name'      => 'estado_id', // the db column for the foreign key
 
-            // optional
-            'entity'    => 'estados', // the method that defines the relationship in your Model
-            'model'     => Estado::class, // foreign key model
-            'attribute' => 'nombre', // foreign key attribute that is shown to user
+        [   // Estado Ajax
+            'label'       => "Estados", // Table column heading
+            'placeholder' => 'SELECCIONE ESTADO',
+            'minimum_input_length' => 1,
+            'type'        => "select2_from_ajax",
+            'name'        => 'estado_id', // the column that contains the ID of that connected entity
+            'entity'      => 'estados', // the method that defines the relationship in your Model
+            'attribute'   => "nombre", // foreign key attribute that is shown to user
+            'data_source' => url("webapi/obtenerEstados"), // url to controller search function (with /{id} should return model)
+            'model'                   => Estado::class, // foreign key model
+            'include_all_form_fields' => true, // optional - only send the current field through AJAX (for a smaller payload if you're not using multiple chained select2s)
 
-            // also optional
-            'options'   => (function ($query) {
-                return $query->orderBy('nombre', 'ASC')->get();
-            }), // force the related options to be a custom query, instead of all(); you can use this to filter the results show in the select
         ],
-        [  // Municipio
+
+//        [   // Municipio Ajax
+//            'label'       => "Municipio", // Table column heading
+//            'placeholder' => 'SELECCIONE MUNICIPIO',
+//            'minimum_input_length' => 1,
+//            'type'        => "select2_from_ajax",
+//            'name'        => 'municipio_id', // the column that contains the ID of that connected entity
+//            'entity'      => 'municipios', // the method that defines the relationship in your Model
+//            'attribute'   => "nombre", // foreign key attribute that is shown to user
+//            'data_source' => url("webapi/obtenerMunicipios"), // url to controller search function (with /{id} should return model)
+//            'model'                   => Municipio::class, // foreign key model
+//            'include_all_form_fields' => true, // optional - only send the current field through AJAX (for a smaller payload if you're not using multiple chained select2s)
+//        ],
+        [  // Municipio Select
             'label'     => "Municipio",
-            'type'      => 'select2',
+            'type'      => 'select',
             'name'      => 'municipio_id', // the db column for the foreign key
 
             // optional
-            'entity'    => 'municipios', // the method that defines the relationship in your Model
-            'model'     => Municipio::class, // foreign key model
+            // 'entity' should point to the method that defines the relationship in your Model
+            // defining entity will make Backpack guess 'model' and 'attribute'
+            'entity'    => 'municipios',
+
+            // optional - manually specify the related model and attribute
+            'model'     => Municipio::class, // related model
             'attribute' => 'nombre', // foreign key attribute that is shown to user
 
-            // also optional
+            // optional - force the related options to be a custom query, instead of all();
             'options'   => (function ($query) {
                 return $query->orderBy('nombre', 'ASC')->get();
-            }), // force the related options to be a custom query, instead of all(); you can use this to filter the results show in the select
+            }), //  you can use this to filter the results show in the select
         ],
+
         [
             // Grupo de cliente
             'name'         => 'grupo_cliente', // name of relationship method in the model
@@ -212,12 +228,6 @@ class ClientesCrudController extends CrudController
 
         ]);
 
-
-        /**
-         * Fields can be defined using the fluent syntax or array syntax:
-         * - CRUD::field('price')->type('number');
-         * - CRUD::addField(['name' => 'price', 'type' => 'number']));
-         */
     }
 
     /**

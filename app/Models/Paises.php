@@ -49,7 +49,11 @@ class Paises extends Model
     }
 
     public function clientes(){
-        $this->belongsTo(Clientes::class,'id','pais_id');
+        $this->belongsTo(Clientes::class,'pais_id','pais_id');
+    }
+
+    public function cliente_direcciones(){
+        $this->belongsTo(ClienteDirecciones::class,'pais_id','pais_id');
     }
 
     /*

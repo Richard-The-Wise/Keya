@@ -123,11 +123,45 @@ class EstadoCrudController extends CrudController
     {
         $search_term = $request->input('q');
         $pais_id = $request->form[2]['value'];
+
+        if (isset($request->form[5]['value'])){
+            $pais_id = $request->form[5]['value'];
+        }
+
         if ($search_term) {
-            $results = Estado::query()
-                ->where('pais_id',$pais_id)
+
+            if (isset($request->form[5]['value'])){
+                $results = Estado::query()
+                ->where('pais_id' , $pais_id)
                 ->where('nombre', 'LIKE', '%'.$search_term.'%')
                 ->paginate(10);
+            }else{
+                $results = Estado::query()
+                ->where('pais_id' , $pais_id)
+                ->where('nombre', 'LIKE', '%'.$search_term.'%')
+                ->paginate(10);
+            }
+
+        } else {
+            $results = Estado::query()
+                ->where('pais_id',$pais_id)
+                ->paginate(10);
+        }
+
+        return $results;
+    }
+
+    public function obtenerEstadosDirecciones(Request $request)
+    {
+        $search_term = $request->input('q');
+        $pais_id = $request->form[9]['value'];
+
+        if ($search_term) {
+            $results = Estado::query()
+                ->where('pais_id' , $pais_id)
+                ->where('nombre', 'LIKE', '%'.$search_term.'%')
+                ->paginate(10);
+
         } else {
             $results = Estado::query()
                 ->where('pais_id',$pais_id)

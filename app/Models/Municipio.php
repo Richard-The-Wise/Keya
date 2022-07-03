@@ -46,6 +46,10 @@ class Municipio extends Model
         $this->belongsTo(Clientes::class,'id','estado_id');
     }
 
+    public function cliente_direcciones(){
+        $this->belongsTo(ClienteDirecciones::class,'municipio_id','municipio_id');
+    }
+
     /*
     |--------------------------------------------------------------------------
     | SCOPES

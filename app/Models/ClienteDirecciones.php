@@ -5,7 +5,7 @@ namespace App\Models;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
 
-class Clientes extends Model
+class ClienteDirecciones extends Model
 {
     use CrudTrait;
 
@@ -15,11 +15,11 @@ class Clientes extends Model
     |--------------------------------------------------------------------------
     */
 
-    protected $table = 'clientes';
+    protected $table = 'cliente_direcciones';
      protected $primaryKey = 'id';
     // public $timestamps = false;
     protected $guarded = ['id'];
-     protected $fillable = ['id','pais_id','estado_id','municipio_id','nombre_comercial','razon_social','email','calle','numero_exterior','numero_interior','colonia','estatus','grupo_cliente_id','codigo_postal'];
+     protected $fillable = ['id','cliente_id','pais_id','estado_id','municipio_id','estatus','tipo','nombre','calle','numero_exterior','numero_interior','colonia','codigo_postal'];
     // protected $hidden = [];
      protected $dates = ['created_at','updated_at','deleted_at'];
 
@@ -34,7 +34,9 @@ class Clientes extends Model
     | RELATIONS
     |--------------------------------------------------------------------------
     */
-
+    public function cliente(){
+        return $this->belongsTo(Clientes::class, 'cliente_id');
+    }
     public function paises(){
         return $this->hasOne(Paises::class,'pais_id','id');
     }
@@ -44,17 +46,8 @@ class Clientes extends Model
     }
 
     public function municipios(){
-        return $this->hasOne(Municipio::class,'municipio_id','id');
+        return $this->hasOne(Municipio::class, 'municipio_id', 'id');
     }
-
-    public function grupo_cliente(){
-        return $this->belongsTo(GruposCliente::class,'grupo_cliente_id');
-    }
-
-    public function cliente_direcciones(){
-        return $this->hasMany(ClienteDirecciones::class,'cliente_id');
-    }
-
     /*
     |--------------------------------------------------------------------------
     | SCOPES

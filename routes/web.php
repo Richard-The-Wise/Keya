@@ -26,4 +26,7 @@ Route::group([
 
     Route::get('obtenerPaises', 'PaisesCrudController@obtenerPaises');
     Route::get('obtenerEstados', 'EstadoCrudController@obtenerEstados');
+    Route::get('obtenerEstadosDirecciones', 'EstadoCrudController@obtenerEstadosDirecciones');
+    Route::get('obtenerMunicipios', 'MunicipioCrudController@obtenerMunicipios');
+    Route::get('obtenerMunicipiosDirecciones', 'MunicipioCrudController@obtenerMunicipiosDirecciones');
 });

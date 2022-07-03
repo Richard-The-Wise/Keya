@@ -46,6 +46,9 @@ class Estado extends Model
         $this->belongsTo(Clientes::class,'id','estado_id');
     }
 
+    public function cliente_direcciones(){
+        $this->belongsTo(ClienteDirecciones::class,'estadi_id','estado_id');
+    }
     /*
     |--------------------------------------------------------------------------
     | SCOPES
