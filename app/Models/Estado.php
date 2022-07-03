@@ -42,6 +42,10 @@ class Estado extends Model
         return $this->hasMany(Municipio::class, 'estado_id','id');
     }
 
+    public function clientes(){
+        $this->belongsTo(Clientes::class,'id','estado_id');
+    }
+
     /*
     |--------------------------------------------------------------------------
     | SCOPES

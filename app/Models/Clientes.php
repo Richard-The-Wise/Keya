@@ -4,12 +4,10 @@ namespace App\Models;
 
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Paises extends Model
+class Clientes extends Model
 {
     use CrudTrait;
-    use SoftDeletes;
 
     /*
     |--------------------------------------------------------------------------
@@ -17,15 +15,13 @@ class Paises extends Model
     |--------------------------------------------------------------------------
     */
 
-    protected $table = 'paises';
-    protected $primaryKey = 'id';
+    protected $table = 'clientes';
+     protected $primaryKey = 'id';
     // public $timestamps = false;
     protected $guarded = ['id'];
-    protected $fillable = ['id','nombre'];
+     protected $fillable = ['id','pais_id','estado_id','municipio_id','nombre_comercial','razon_social','email','calle','numero_exterior','numero_interior','colonia','estatus','grupo_cliente_id','codigo_postal'];
     // protected $hidden = [];
-    protected $dates = ['created_at','updated_at','deleted_at'];
-    // protected $casts = [];
-    // protected $appends = [];
+     protected $dates = ['created_at','updated_at','deleted_at'];
 
     /*
     |--------------------------------------------------------------------------
@@ -33,23 +29,26 @@ class Paises extends Model
     |--------------------------------------------------------------------------
     */
 
-
-
     /*
     |--------------------------------------------------------------------------
     | RELATIONS
     |--------------------------------------------------------------------------
     */
+
+    public function paises(){
+        return $this->hasOne(Paises::class,'pais_id','id');
+    }
+
     public function estados(){
-        return $this->hasMany(Estado::class, 'pais_id', 'id');
+        return $this->hasOne(Estado::class,'estado_id','id');
     }
 
     public function municipios(){
-        return $this->hasMany(Municipio::class, 'pais_id','id');
+        return $this->hasOne(Municipio::class,'municipio_id','id');
     }
 
-    public function clientes(){
-        $this->belongsTo(Clientes::class,'id','pais_id');
+    public function grupo_cliente(){
+        return $this->belongsTo(GruposCliente::class,'grupo_cliente_id','id');
     }
 
     /*

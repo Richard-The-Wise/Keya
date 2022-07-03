@@ -34,7 +34,9 @@ class GruposCliente extends Model
     | RELATIONS
     |--------------------------------------------------------------------------
     */
-
+    public function clientes(){
+        return $this->hasMany(Clientes::class,'grupo_cliente_id');
+    }
     /*
     |--------------------------------------------------------------------------
     | SCOPES

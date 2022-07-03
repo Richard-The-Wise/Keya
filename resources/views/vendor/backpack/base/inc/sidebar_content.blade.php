@@ -5,3 +5,4 @@
 <li class='nav-item'><a class='nav-link' href='{{ backpack_url('municipio') }}'><i class='nav-icon la la-question'></i> Municipios</a></li>
 
 <li class='nav-item'><a class='nav-link' href='{{ backpack_url('grupos-cliente') }}'><i class='nav-icon la la-question'></i> Grupos clientes</a></li>
+<li class='nav-item'><a class='nav-link' href='{{ backpack_url('clientes') }}'><i class='nav-icon la la-question'></i> Clientes</a></li>

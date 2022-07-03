@@ -42,6 +42,10 @@ class Municipio extends Model
         return $this->belongsTo(Paises::class,'pais_id','id');
     }
 
+    public function clientes(){
+        $this->belongsTo(Clientes::class,'id','estado_id');
+    }
+
     /*
     |--------------------------------------------------------------------------
     | SCOPES
