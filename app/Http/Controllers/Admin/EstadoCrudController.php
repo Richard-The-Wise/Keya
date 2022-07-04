@@ -44,6 +44,11 @@ class EstadoCrudController extends CrudController
     {
         $this->crud-> addColumns([
             [
+                'name'         => 'pais_id', // name of relationship method in the model
+                'type'         => 'text',
+                'label'        => 'ID', // Table column heading
+            ],
+            [
                 // any type of relationship
                 'name'         => 'estados', // name of relationship method in the model
                 'type'         => 'relationship',
@@ -121,26 +126,22 @@ class EstadoCrudController extends CrudController
 
     public function obtenerEstados(Request $request)
     {
+        //Asignar Estado
         $search_term = $request->input('q');
         $pais_id = $request->form[2]['value'];
 
+        //Al asignar cliente
         if (isset($request->form[5]['value'])){
             $pais_id = $request->form[5]['value'];
         }
 
         if ($search_term) {
 
-            if (isset($request->form[5]['value'])){
-                $results = Estado::query()
-                ->where('pais_id' , $pais_id)
-                ->where('nombre', 'LIKE', '%'.$search_term.'%')
-                ->paginate(10);
-            }else{
-                $results = Estado::query()
-                ->where('pais_id' , $pais_id)
-                ->where('nombre', 'LIKE', '%'.$search_term.'%')
-                ->paginate(10);
-            }
+            $results = Estado::query()
+            ->where('pais_id' , $pais_id)
+            ->where('nombre', 'LIKE', '%'.$search_term.'%')
+            ->paginate(10);
+
 
         } else {
             $results = Estado::query()

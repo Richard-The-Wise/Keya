@@ -8,7 +8,7 @@ use App\Models\Municipio;
 use App\Models\Paises;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
-use http\Client\Request;
+use Illuminate\Http\Request;
 
 /**
  * Class MunicipioCrudController
@@ -106,7 +106,7 @@ class MunicipioCrudController extends CrudController
             [   // 1-n relationship
                 'label'       => "Estados", // Table column heading
                 'placeholder' => 'SELECCIONE ESTADO',
-                'minimum_input_length' => 1,
+                'minimum_input_length' => 0,
                 'type'        => "select2_from_ajax",
                 'name'        => 'estado_id', // the column that contains the ID of that connected entity
                 'entity'      => 'estados', // the method that defines the relationship in your Model
@@ -137,24 +137,18 @@ class MunicipioCrudController extends CrudController
     }
 
     public function obtenerMunicipios(Request $request){
+
+//        $form = collect($request->input('form'))->pluck('value', 'name');
+//        $estado_id = !isset( $form['estado_id'] ) ? $form['estado'] : $form['estado_id'];
+
         $search_term = $request->input('q');
-        $pais_id = $request->form[5]['value'];
         $estado_id = $request->form[6]['value'];
 
-        if ($search_term)
-        {
-            $results = Municipio::query()
-            ->where('pais_id',$pais_id)
-            ->where('estado_id',$estado_id)
-            ->where('nombre', 'LIKE', '%'.$search_term.'%')
-            ->paginate(10);
-        }
-        else
-        {
-            $results = Municipio::query()
-            ->where('nombre', 'LIKE', '%'.$search_term.'%')
-            ->paginate(10);
-        }
+        $results = Municipio::query()
+        ->where('estado_id',$estado_id)
+        ->where('nombre', 'LIKE', '%'.$search_term.'%')
+        ->paginate(10);
+
 
         return $results;
     }

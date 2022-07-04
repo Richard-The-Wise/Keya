@@ -43,11 +43,11 @@ class Estado extends Model
     }
 
     public function clientes(){
-        $this->belongsTo(Clientes::class,'id','estado_id');
+        $this->hasMany(Clientes::class);
     }
 
     public function cliente_direcciones(){
-        $this->belongsTo(ClienteDirecciones::class,'estadi_id','estado_id');
+        $this->hasMany(ClienteDirecciones::class,'estado_id');
     }
     /*
     |--------------------------------------------------------------------------

@@ -38,15 +38,15 @@ class ClienteDirecciones extends Model
         return $this->belongsTo(Clientes::class, 'cliente_id');
     }
     public function paises(){
-        return $this->hasOne(Paises::class,'pais_id','id');
+        return $this->belongsTo(Paises::class,'pais_id');
     }
 
     public function estados(){
-        return $this->hasOne(Estado::class,'estado_id','id');
+        return $this->belongsTo(Estado::class,'estado_id');
     }
 
     public function municipios(){
-        return $this->hasOne(Municipio::class, 'municipio_id', 'id');
+        return $this->belongsTo(Municipio::class, 'municipio_id');
     }
     /*
     |--------------------------------------------------------------------------

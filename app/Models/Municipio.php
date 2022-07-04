@@ -43,11 +43,11 @@ class Municipio extends Model
     }
 
     public function clientes(){
-        $this->belongsTo(Clientes::class,'id','estado_id');
+        $this->hasMany(Clientes::class);
     }
 
     public function cliente_direcciones(){
-        $this->belongsTo(ClienteDirecciones::class,'municipio_id','municipio_id');
+        $this->hasMany(ClienteDirecciones::class,'municipio_id');
     }
 
     /*

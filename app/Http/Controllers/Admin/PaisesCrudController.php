@@ -82,6 +82,8 @@ class PaisesCrudController extends CrudController
 
     public function obtenerPaises(Request $request){
         $buscar = $request->input('q');
+
+
         if ($buscar) {
             $resultados = Paises::query()
                 ->where('nombre', 'LIKE', '%'.$buscar.'%')

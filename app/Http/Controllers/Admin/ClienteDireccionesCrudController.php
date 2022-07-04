@@ -43,6 +43,96 @@ class ClienteDireccionesCrudController extends CrudController
      */
     protected function setupListOperation()
     {
+        $this->crud->addColumns([
+            [
+                // Id
+                'name'         => 'id', // name of relationship method in the model
+                'type'         => 'number',
+                'label'        => 'ID', // Table column heading
+            ],
+            [
+                // Nombre
+                'name'         => 'nombre', // name of relationship method in the model
+                'type'         => 'text',
+                'label'        => 'Nombre', // Table column heading
+            ],
+            [
+                // Calle
+                'name'         => 'calle', // name of relationship method in the model
+                'type'         => 'text',
+                'label'        => 'Calle', // Table column heading
+            ],
+            [
+                // Numero Exterior
+                'name'         => 'numero_exterior', // name of relationship method in the model
+                'type'         => 'text',
+                'label'        => 'Numero Exterior', // Table column heading
+            ],
+            [
+                // Numero interior
+                'name'         => 'numero_interior', // name of relationship method in the model
+                'type'         => 'text',
+                'label'        => 'Numero Interior', // Table column heading
+            ],
+            [
+                // Colonia
+                'name'         => 'colonia', // name of relationship method in the model
+                'type'         => 'text',
+                'label'        => 'Colonia', // Table column heading
+            ],
+            [
+                // Colonia
+                'name'         => 'colonia', // name of relationship method in the model
+                'type'         => 'text',
+                'label'        => 'Colonia', // Table column heading
+            ],
+            [
+                // Codigo postal
+                'name'         => 'codigo_postal', // name of relationship method in the model
+                'type'         => 'text',
+                'label'        => 'Código Postal', // Table column heading
+            ],
+            [
+                // Pais
+                'name'         => 'paises', // name of relationship method in the model
+                'type'         => 'relationship',
+                'label'        => 'País', // Table column heading
+                'entity'    => 'paises', // the method that defines the relationship in your Model
+                'attribute' => 'nombre', // foreign key attribute that is shown to user
+                'model'     => Paises::class, // foreign key model
+            ],
+            [
+                // Estado
+                'name'         => 'estados', // name of relationship method in the model
+                'type'         => 'relationship',
+                'label'        => 'Estado', // Table column heading
+                'entity'    => 'estados', // the method that defines the relationship in your Model
+                'attribute' => 'nombre', // foreign key attribute that is shown to user
+                'model'     => Estado::class, // foreign key model
+            ],
+            [
+                // Municipio
+                'name'         => 'municipios', // name of relationship method in the model
+                'type'         => 'relationship',
+                'label'        => 'Municipio', // Table column heading
+                'entity'    => 'estados', // the method that defines the relationship in your Model
+                'attribute' => 'nombre', // foreign key attribute that is shown to user
+                'model'     => Municipio::class, // foreign key model
+            ],
+            [
+                // Estatus
+                'name'         => 'estatus', // name of relationship method in the model
+                'type'         => 'text',
+                'label'        => 'Estatus', // Table column heading
+            ],
+            [
+                // Tipo de Dirección
+                'name'         => 'tipo', // name of relationship method in the model
+                'type'         => 'text',
+                'label'        => 'Tipo de Dirección', // Table column heading
+            ],
+
+        ]);
 
 
 
@@ -107,7 +197,7 @@ class ClienteDireccionesCrudController extends CrudController
             [   // País Ajax
                 'label'       => "Paises", // Table column heading
                 'placeholder' => 'SELECCIONE PAIS',
-                'minimum_input_length' => 1,
+                'minimum_input_length' => 0,
                 'type'        => "select2_from_ajax",
                 'name'        => 'pais_id', // the column that contains the ID of that connected entity
                 'entity'      => 'paises', // the method that defines the relationship in your Model
@@ -120,7 +210,7 @@ class ClienteDireccionesCrudController extends CrudController
             [   // Estado Ajax
                 'label'       => "Estados", // Table column heading
                 'placeholder' => 'SELECCIONE ESTADO',
-                'minimum_input_length' => 1,
+                'minimum_input_length' => 0,
                 'type'        => "select2_from_ajax",
                 'name'        => 'estado_id', // the column that contains the ID of that connected entity
                 'entity'      => 'estados', // the method that defines the relationship in your Model
@@ -130,36 +220,17 @@ class ClienteDireccionesCrudController extends CrudController
                 'include_all_form_fields' => true, // optional - only send the current field through AJAX (for a smaller payload if you're not using multiple chained select2s)
 
             ],
-//            [   // Municipio Ajax
-//                'label'       => "Municipio", // Table column heading
-//                'placeholder' => 'SELECCIONE MUNICIPIO',
-//                'minimum_input_length' => 1,
-//                'type'        => "select2_from_ajax",
-//                'name'        => 'municipio_id', // the column that contains the ID of that connected entity
-//                'entity'      => 'municipios', // the method that defines the relationship in your Model
-//                'attribute'   => "nombre", // foreign key attribute that is shown to user
-//                'data_source' => url("webapi/obtenerMunicipiosDirecciones"), // url to controller search function (with /{id} should return model)
-//                'model'                   => Municipio::class, // foreign key model
-//                'include_all_form_fields' => true, // optional - only send the current field through AJAX (for a smaller payload if you're not using multiple chained select2s)
-//            ],
-            [  // Municipio Select
-                'label'     => "Municipio",
-                'type'      => 'select',
-                'name'      => 'municipio_id', // the db column for the foreign key
-
-                // optional
-                // 'entity' should point to the method that defines the relationship in your Model
-                // defining entity will make Backpack guess 'model' and 'attribute'
-                'entity'    => 'municipios',
-
-                // optional - manually specify the related model and attribute
-                'model'     => Municipio::class, // related model
-                'attribute' => 'nombre', // foreign key attribute that is shown to user
-
-                // optional - force the related options to be a custom query, instead of all();
-                'options'   => (function ($query) {
-                    return $query->orderBy('nombre', 'ASC')->get();
-                }), //  you can use this to filter the results show in the select
+            [   // Municipio Ajax
+                'label'       => "Municipio", // Table column heading
+                'placeholder' => 'SELECCIONE MUNICIPIO',
+                'minimum_input_length' => 0,
+                'type'        => "select2_from_ajax",
+                'name'        => 'municipio_id', // the column that contains the ID of that connected entity
+                'entity'      => 'municipios', // the method that defines the relationship in your Model
+                'attribute'   => "nombre", // foreign key attribute that is shown to user
+                'data_source' => url("webapi/obtenerMunicipiosDirecciones"), // url to controller search function (with /{id} should return model)
+                'model'                   => Municipio::class, // foreign key model
+                'include_all_form_fields' => true, // optional - only send the current field through AJAX (for a smaller payload if you're not using multiple chained select2s)
             ],
             [   // Estatus
                 'name'  => 'estatus',

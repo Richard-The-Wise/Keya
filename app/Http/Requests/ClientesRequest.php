@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class ClientesRequest extends FormRequest
 {
@@ -25,7 +26,8 @@ class ClientesRequest extends FormRequest
     public function rules()
     {
         return [
-             'codigo_postal' => 'required|numeric'
+             'codigo_postal' => 'required|numeric',
+
         ];
     }
 
