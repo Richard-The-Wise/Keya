@@ -218,7 +218,7 @@ class ClienteDireccionesCrudController extends CrudController
                 'data_source' => url("webapi/obtenerEstadosDirecciones"), // url to controller search function (with /{id} should return model)
                 'model'                   => Estado::class, // foreign key model
                 'include_all_form_fields' => true, // optional - only send the current field through AJAX (for a smaller payload if you're not using multiple chained select2s)
-
+                'dependencies'            => ['pais_id'], // when a dependency changes, this select2 is reset to null
             ],
             [   // Municipio Ajax
                 'label'       => "Municipio", // Table column heading
@@ -231,6 +231,7 @@ class ClienteDireccionesCrudController extends CrudController
                 'data_source' => url("webapi/obtenerMunicipiosDirecciones"), // url to controller search function (with /{id} should return model)
                 'model'                   => Municipio::class, // foreign key model
                 'include_all_form_fields' => true, // optional - only send the current field through AJAX (for a smaller payload if you're not using multiple chained select2s)
+                'dependencies'            => ['estado_id'], // when a dependency changes, this select2 is reset to null
             ],
             [   // Estatus
                 'name'  => 'estatus',
@@ -242,9 +243,6 @@ class ClienteDireccionesCrudController extends CrudController
                 'label' => 'Tipo',
                 'type'  => 'enum'
             ],
-
-
-
         ]);
     }
 

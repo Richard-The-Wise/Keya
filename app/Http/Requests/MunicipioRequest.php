@@ -2,10 +2,13 @@
 
 namespace App\Http\Requests;
 
+use App\Http\Controllers\Admin\MunicipioCrudController;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Request;
 
 class MunicipioRequest extends FormRequest
 {
+
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -25,7 +28,8 @@ class MunicipioRequest extends FormRequest
     public function rules()
     {
         return [
-             'nombre' => 'required|max:255'
+            'nombre' => 'required|max:255',
+            'estado_id' => 'required|numeric'
         ];
     }
 
@@ -50,7 +54,8 @@ class MunicipioRequest extends FormRequest
     {
         return [
             'nombre.required' => 'El campo es requerido',
-            'nombre.max' => ''
+            'nombre.max' => 'Nombre muy largo',
+            'estado_id.required' => 'Ingresa un Estado'
         ];
     }
 }

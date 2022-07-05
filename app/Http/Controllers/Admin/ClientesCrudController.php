@@ -7,6 +7,7 @@ use App\Models\Estado;
 use App\Models\GruposCliente;
 use App\Models\Municipio;
 use App\Models\Paises;
+use App\Models\Clientes;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 
@@ -60,37 +61,6 @@ class ClientesCrudController extends CrudController
                  'attribute' => 'nombre', // foreign key attribute that is shown to user
                  'model'     => GruposCliente::class, // foreign key model
             ],
-
-            [
-                // Pais
-                'name'         => 'paises', // name of relationship method in the model
-                'type'         => 'relationship',
-                'label'        => 'País', // Table column heading
-                // OPTIONAL
-                'entity'    => 'paises', // the method that defines the relationship in your Model
-                'attribute' => 'nombre', // foreign key attribute that is shown to user
-                'model'     => Paises::class, // foreign key model
-            ],
-            [
-                // Estado
-                'name'         => 'estados', // name of relationship method in the model
-                'type'         => 'relationship',
-                'label'        => 'Estado', // Table column heading
-                // OPTIONAL
-                'entity'    => 'estados', // the method that defines the relationship in your Model
-                'attribute' => 'nombre', // foreign key attribute that is shown to user
-                'model'     => Estado::class, // foreign key model
-            ],
-            [
-                // Municipio
-                'name'         => 'municipios', // name of relationship method in the model
-                'type'         => 'relationship',
-                'label'        => 'Municipio', // Table column heading
-                // OPTIONAL
-                'entity'    => 'estados', // the method that defines the relationship in your Model
-                'attribute' => 'nombre', // foreign key attribute that is shown to user
-                'model'     => Municipio::class, // foreign key model
-            ],
             [
                 // Nombre Comercial
                 'name'         => 'nombre_comercial', // name of relationship method in the model
@@ -128,6 +98,36 @@ class ClientesCrudController extends CrudController
                 'label'        => 'Colonia', // Table column heading
             ],
             [
+                // Pais
+                'name'         => 'paises', // name of relationship method in the model
+                'type'         => 'relationship',
+                'label'        => 'País', // Table column heading
+                // OPTIONAL
+                'entity'    => 'paises', // the method that defines the relationship in your Model
+                'attribute' => 'nombre', // foreign key attribute that is shown to user
+                'model'     => Paises::class, // foreign key model
+            ],
+            [
+                // Estado
+                'name'         => 'estados', // name of relationship method in the model
+                'type'         => 'relationship',
+                'label'        => 'Estado', // Table column heading
+                // OPTIONAL
+                'entity'    => 'estados', // the method that defines the relationship in your Model
+                'attribute' => 'nombre', // foreign key attribute that is shown to user
+                'model'     => Estado::class, // foreign key model
+            ],
+            [
+                // Municipio
+                'name'         => 'municipios', // name of relationship method in the model
+                'type'         => 'relationship',
+                'label'        => 'Municipio', // Table column heading
+                // OPTIONAL
+                'entity'    => 'municipios', // the method that defines the relationship in your Model
+                'attribute' => 'nombre', // foreign key attribute that is shown to user
+                'model'     => Municipio::class, // foreign key model
+            ],
+            [
                 // Estatus
                 'name'         => 'estatus', // name of relationship method in the model
                 'type'         => 'text',
@@ -136,7 +136,7 @@ class ClientesCrudController extends CrudController
             [
                 // Codigo Postal
                 'name'         => 'codigo_postal', // name of relationship method in the model
-                'type'         => 'number',
+                'type'         => 'text',
                 'label'        => 'Codigo Postal', // Table column heading
             ],
         ]);
@@ -149,9 +149,12 @@ class ClientesCrudController extends CrudController
      * @see https://backpackforlaravel.com/docs/crud-operation-create
      * @return void
      */
-    protected function setupCreateOperation()
+    protected function setupCreateOperation($update = null)
     {
-        CRUD::setValidation(ClientesRequest::class);
+        if (!$update){
+            $this->crud->setValidation(ClientesRequest::class);
+        }
+
         $this->crud->addFields([
         [   // Nombre Comercial
             'name'  => 'nombre_comercial',
@@ -170,7 +173,7 @@ class ClientesCrudController extends CrudController
         ],
 
         [   // País Ajax
-            'label'       => "Paises", // Table column heading
+            'label'       => "Pais", // Table column heading
             'placeholder' => 'SELECCIONE PAIS',
             'minimum_input_length' => 0,
             'type'        => "select2_from_ajax",
@@ -184,7 +187,7 @@ class ClientesCrudController extends CrudController
         ],
 
         [   // Estado Ajax
-            'label'       => "Estados", // Table column heading
+            'label'       => "Estado", // Table column heading
             'placeholder' => 'SELECCIONE ESTADO',
             'minimum_input_length' => 0,
             'type'        => "select2_from_ajax",
@@ -194,6 +197,7 @@ class ClientesCrudController extends CrudController
             'data_source' => url("webapi/obtenerEstados"), // url to controller search function (with /{id} should return model)
             'model'                   => Estado::class, // foreign key model
             'include_all_form_fields' => true, // optional - only send the current field through AJAX (for a smaller payload if you're not using multiple chained select2s)
+            'dependencies'            => ['pais_id'], // when a dependency changes, this select2 is reset to null
 
         ],
 
@@ -208,11 +212,12 @@ class ClientesCrudController extends CrudController
             'data_source' => url("webapi/obtenerMunicipios"), // url to controller search function (with /{id} should return model)
             'model'                   => Municipio::class, // foreign key model
             'include_all_form_fields' => true, // optional - only send the current field through AJAX (for a smaller payload if you're not using multiple chained select2s)
-        ],
+            'dependencies'            => ['estado_id'], // when a dependency changes, this select2 is reset to null
 
+        ],
         [
             // Grupo de cliente
-            'name'         => 'grupo_cliente', // name of relationship method in the model
+            'name'         => 'grupo_cliente_id', // name of relationship method in the model
             'type'         => 'relationship',
             'label'        => 'Grupo de cliente', // Table column heading
             // OPTIONAL
@@ -250,9 +255,7 @@ class ClientesCrudController extends CrudController
             'label' => 'Estatus',
             'type'  => 'enum'
         ]
-
         ]);
-
     }
 
     /**
@@ -263,6 +266,7 @@ class ClientesCrudController extends CrudController
      */
     protected function setupUpdateOperation()
     {
-        $this->setupCreateOperation();
+        $this->setupCreateOperation(1);
+
     }
 }

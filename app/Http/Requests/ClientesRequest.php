@@ -2,7 +2,10 @@
 
 namespace App\Http\Requests;
 
+use App\Http\Controllers\Admin\ClientesCrudController;
+use App\Models\Clientes;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
 class ClientesRequest extends FormRequest
@@ -25,8 +28,23 @@ class ClientesRequest extends FormRequest
      */
     public function rules()
     {
+
         return [
-             'codigo_postal' => 'required|numeric',
+            'nombre_comercial' => 'required|unique:App\Models\Clientes,nombre_comercial',
+            'razon_social' => 'required',
+            'colonia' => 'required',
+            'email' => 'required|email',
+            'pais_id' => 'required',
+            'estado_id' => 'required',
+            'municipio_id' => 'required',
+            'grupo_cliente_id' => 'required|numeric',
+            'calle' => 'required',
+            'numero_exterior' => 'required|numeric',
+            'numero_interior' => 'numeric|nullable',
+            'codigo_postal' => 'required|numeric',
+            'estatus' => 'required',
+
+
 
         ];
     }
