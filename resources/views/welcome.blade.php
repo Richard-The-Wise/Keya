@@ -21,7 +21,6 @@
         </style>
     </head>
     <body class="antialiased">
-    <iframe class="scribd_iframe_embed" marginwidth="100%" title="Momentos Del Grupo" src="https://www.scribd.com/embeds/342517777/content?start_page=1&view_mode=scroll&access_key=key-YcyGIMWBG4YqwFSNM7HH" tabindex="0" data-auto-height="true" data-aspect-ratio="0.7729220222793488" scrolling="no" width="100%" height="600" frameborder="0"></iframe><p  style="   margin: 12px auto 6px auto;   font-family: Helvetica,Arial,Sans-serif;   font-style: normal;   font-variant: normal;   font-weight: normal;   font-size: 14px;   line-height: normal;   font-size-adjust: none;   font-stretch: normal;   -x-system-font: none;   display: block;"   ><a title="View Momentos Del Grupo on Scribd" href="https://www.scribd.com/document/342517777/Momentos-Del-Grupo#from_embed"  style="text-decoration: underline;">Momentos Del Grupo</a> by <a title="View Alain Rosado Ordoñez's profile on Scribd" href="https://www.scribd.com/user/343967060/Alain-Rosado-Ordonez#from_embed"  style="text-decoration: underline;">Alain Rosado Ordoñez</a></p>
         <div class="relative flex items-top justify-center min-h-screen bg-gray-100 dark:bg-gray-900 sm:items-center py-4 sm:pt-0">
             @if (Route::has('login'))
                 <div class="hidden fixed top-0 right-0 px-6 py-4 sm:block">
