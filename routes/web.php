@@ -14,6 +14,9 @@
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('/', function(){ return redirect('/admin'); });
+
+Route::get('prueba', 'App\Http\Controllers\Admin\ClientesCrudController@obtenerClientes');
 
 Route::group([
     'prefix'     => 'webapi',

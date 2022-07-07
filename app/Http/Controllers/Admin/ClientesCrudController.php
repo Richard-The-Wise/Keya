@@ -269,4 +269,18 @@ class ClientesCrudController extends CrudController
         $this->setupCreateOperation(1);
 
     }
+
+    public function obtenerClientes(){
+
+        $clientes = \App\Models\Clientes::query()
+            ->with(['paises:id,nombre','estados:id,nombre','municipios:id,nombre','grupo_cliente:id,nombre'])
+            ->where('estatus','activo')
+            ->orderBy('created_at', 'ASC')
+            ->get(['id','estatus','colonia','nombre_comercial','pais_id','estado_id','municipio_id','grupo_cliente_id']);
+        dd($clientes);
+//        ->map(function ($cliente){l
+//           dd($cliente);
+//        });
+
+    }
 }
